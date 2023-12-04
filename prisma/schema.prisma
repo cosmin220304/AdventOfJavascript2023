@@ -31,12 +31,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String? @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -60,16 +60,16 @@ model VerificationToken {
 }
 
 model User {
-    id        String    @id @default(cuid())
-    email     String    @unique
-    password  String
-    firstName String
-    lastName  String
-    avatar    String?
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    role      RoleEnum
-    pairing   Pairing[]
+    id            String    @id @default(cuid())
+    email         String    @unique
+    emailVerified DateTime? @db.DateTime
+    password      String? // if logged with google, no password
+    name          String
+    image         String?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    role          RoleEnum? @default(USER)
+    pairing       Pairing[]
 
     Post       Post[]
     Account    Account[]

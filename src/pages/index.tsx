@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Icon from "@/components/Icon";
 import Head from "next/head";
+import Avatar from "@/components/Avatar";
 
 export default function Home() {
   return (
@@ -11,21 +12,33 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <Icon iconId="calendar" />
-        <Icon iconId="check" />
-        <Icon iconId="chevron" />
-        <Icon iconId="close" />
-        <Icon iconId="eyeClosed" />
-        <Icon iconId="eyeOpened" />
-        <Icon iconId="logout" />
-        <Icon iconId="minus" />
-        <Icon iconId="plus" />
-        <Icon iconId="question" />
-        <Icon iconId="thumbsDown" />
-        <Icon iconId="thumbsUp" />
-        <Icon iconId="upload" />
-        <Icon iconId="user" />
+      <main className="m-32 flex gap-2">
+        <Avatar variant="initials" name="Cosmin" />
+        <Avatar
+          variant="image"
+          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+        />
+        <Avatar
+          variant="image"
+          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          indicator="check"
+        />
+        <Avatar
+          variant="image"
+          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          indicator="minus"
+        />
+        <Avatar
+          variant="image"
+          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          indicator="question"
+        />
+        <Avatar variant="icon" iconId="eyeClosed" />
+        <Avatar
+          variant="image"
+          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          santaHat
+        />
       </main>
 
       <AuthShowcase />
@@ -35,7 +48,6 @@ export default function Home() {
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
-  console.log(sessionData);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">

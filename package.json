@@ -31,6 +31,7 @@
     "rippleui": "^1.12.1",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.1.0",
+    "ts-pattern": "^5.0.6",
     "zod": "^3.22.4"
   },
   "devDependencies": {

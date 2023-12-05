@@ -1,21 +1,26 @@
 import { twMerge } from "tailwind-merge";
 
+export const ICONS = [
+  "calendar",
+  "check",
+  "chevron",
+  "close",
+  "eyeClosed",
+  "eyeOpened",
+  "logout",
+  "minus",
+  "plus",
+  "question",
+  "thumbsDown",
+  "thumbsUp",
+  "upload",
+  "user",
+] as const;
+
+export type IconId = (typeof ICONS)[number];
+
 type Props = {
-  iconId:
-    | "calendar"
-    | "check"
-    | "chevron"
-    | "close"
-    | "eyeClosed"
-    | "eyeOpened"
-    | "logout"
-    | "minus"
-    | "plus"
-    | "question"
-    | "thumbsDown"
-    | "thumbsUp"
-    | "upload"
-    | "user";
+  iconId: IconId;
 } & React.SVGProps<SVGSVGElement>;
 
 const Icon = ({ iconId, className, ...props }: Props) => {

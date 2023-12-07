@@ -1,7 +1,5 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import Icon from "@/components/Icon";
 import Head from "next/head";
-import Avatar from "@/components/Avatar";
 
 export default function Home() {
   return (
@@ -12,34 +10,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="m-32 flex gap-2">
-        <Avatar variant="initials" name="Cosmin" />
-        <Avatar
-          variant="image"
-          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-        />
-        <Avatar
-          variant="image"
-          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-          indicator="check"
-        />
-        <Avatar
-          variant="image"
-          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-          indicator="minus"
-        />
-        <Avatar
-          variant="image"
-          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-          indicator="question"
-        />
-        <Avatar variant="icon" iconId="eyeClosed" />
-        <Avatar
-          variant="image"
-          avatar="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-          santaHat
-        />
-      </main>
+      <main className="m-32 flex gap-2"></main>
 
       <AuthShowcase />
     </>

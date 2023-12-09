@@ -28,7 +28,7 @@ const CreateEventForm = () => {
   const handleCreateEvent = async (event: CreateEvent) => {
     try {
       await createEvent(event);
-      push("/", undefined, { shallow: true });
+      push("/events/invite", undefined, { shallow: true });
     } catch (error) {
       console.log(error);
     }

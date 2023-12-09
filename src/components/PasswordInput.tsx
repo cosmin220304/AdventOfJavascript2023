@@ -13,7 +13,7 @@ const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       ref={ref}
       type={show ? "text" : "password"}
       rightSide={
-        <button onClick={() => setShow(!show)}>
+        <button onClick={() => setShow(!show)} type="button">
           {show ? (
             <EyeIcon className="h-8 w-8" />
           ) : (

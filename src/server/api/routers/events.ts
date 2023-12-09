@@ -14,7 +14,7 @@ export const eventsRouter = createTRPCRouter({
     .input(CreateEventSchema)
     .mutation(async ({ input, ctx }) => {
       return ctx.db.event.create({
-        data: input,
+        data: { ...input, owner: ctx.session.user.id },
       });
     }),
 });

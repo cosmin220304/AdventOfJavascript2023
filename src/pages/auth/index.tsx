@@ -1,5 +1,6 @@
 import LoginForm from "@/features/auth/LoginForm";
 import RegisterForm from "@/features/auth/RegisterForm";
+import Layout from "@/layouts/Layout";
 import { useRouter } from "next/router";
 import { match } from "ts-pattern";
 
@@ -15,19 +16,12 @@ const authPage = () => {
   const authPage = query.pageType ?? "login";
 
   return (
-    <div className="relative flex h-[70rem] flex-col items-center gap-2 bg-[#70BD91]">
-      <BackgroundDecoration />
+    <Layout variant="single-form">
       {match(authPage)
         .with("login", () => <LoginForm />)
         .with("register", () => <RegisterForm />)
         .otherwise(() => null)}
-    </div>
-  );
-};
-
-const BackgroundDecoration = () => {
-  return (
-    <div className="pointer-events-none absolute top-0 z-0 h-[80rem] w-full bg-[url('/images/bg-decorations-full.svg')] bg-contain bg-no-repeat" />
+    </Layout>
   );
 };
 

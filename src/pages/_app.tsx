@@ -5,7 +5,7 @@ import { type AppType } from "next/app";
 import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
-import Footer from "@/components/Footer";
+import Footer from "@/layouts/Footer";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

@@ -58,11 +58,12 @@ model User {
     role          RoleEnum? @default(USER)
     pairing       Pairing[]
 
-    Account    Account[]
-    Session    Session[]
-    UserStatus UserStatus[]
-    WishList   WishList[]
-    ThankYou   ThankYou[]
+    Account  Account[]
+    Session  Session[]
+    Invite   Invite[]
+    WishList WishList[]
+    ThankYou ThankYou[]
+    Event    Event[]
 }
 
 enum RoleEnum {
@@ -70,17 +71,17 @@ enum RoleEnum {
     ADMIN
 }
 
-model UserStatus {
-    id      String         @id @default(cuid())
+model Invite {
+    id      String     @id @default(cuid())
     eventId String
     userId  String
-    status  UserStatusEnum
+    status  UserStatus
 
     event Event @relation(fields: [eventId], references: [id])
     user  User  @relation(fields: [userId], references: [id])
 }
 
-enum UserStatusEnum {
+enum UserStatus {
     INVITED
     ACCEPTED
     DECLINED
@@ -93,11 +94,15 @@ model Event {
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
     sendReminder Boolean? @default(false)
+    owner        String
 
-    UserStatus UserStatus[]
-    WishList   WishList[]
-    Pairing    Pairing[]
-    ThankYou   ThankYou[]
+    Owner    User       @relation(fields: [owner], references: [id])
+    Invite   Invite[]
+    WishList WishList[]
+    Pairing  Pairing[]
+    ThankYou ThankYou[]
+
+    @@index([owner])
 }
 
 model Pairing {

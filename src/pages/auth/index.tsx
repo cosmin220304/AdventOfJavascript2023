@@ -36,7 +36,7 @@ const authPage = () => {
 
 const BackgroundDecoration = () => {
   return (
-    <div className="pointer-events-none absolute top-0 z-0 h-[80rem] w-full bg-[url('/images/bg-auth.png')] bg-contain bg-no-repeat" />
+    <div className="pointer-events-none absolute top-0 z-0 h-[80rem] w-full bg-[url('/images/bg-decorations-full.svg')] bg-contain bg-no-repeat" />
   );
 };
 

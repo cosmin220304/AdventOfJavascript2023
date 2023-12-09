@@ -11,4 +11,24 @@ export default {
     },
   },
   plugins: [require("rippleui")],
+  rippleui: {
+    themes: [
+      {
+        themeName: "light",
+        colorScheme: "light",
+        colors: {
+          primary: "#235264",
+          backgroundPrimary: "#964643",
+        },
+      },
+      {
+        themeName: "dark",
+        colorScheme: "light",
+        colors: {
+          primary: "#235264",
+          backgroundPrimary: "#964643",
+        },
+      },
+    ],
+  },
 } satisfies Config;

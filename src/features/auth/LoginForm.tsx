@@ -35,7 +35,7 @@ const LoginForm = () => {
       return;
     }
 
-    push("/", undefined, { shallow: true });
+    push("/events/new", undefined, { shallow: true });
   };
 
   return (

@@ -58,7 +58,6 @@ model User {
     role          RoleEnum? @default(USER)
     pairing       Pairing[]
 
-    Post       Post[]
     Account    Account[]
     Session    Session[]
     UserStatus UserStatus[]
@@ -93,7 +92,7 @@ model Event {
     date         DateTime
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
-    sendReminder Boolean
+    sendReminder Boolean? @default(false)
 
     UserStatus UserStatus[]
     WishList   WishList[]

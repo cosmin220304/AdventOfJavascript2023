@@ -17,9 +17,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="m-32 flex gap-2">
+      <div className="m-32 flex gap-2">
         <h1 className="text-5xl">Dashboard</h1>
-      </main>
+      </div>
     </>
   );
 }

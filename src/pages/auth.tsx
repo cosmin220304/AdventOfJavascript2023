@@ -23,13 +23,13 @@ const authPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="relative flex min-h-[150vh] flex-col items-center gap-2 bg-[#70BD91] text-black">
+      <div className="relative flex h-[70rem] flex-col items-center gap-2 bg-[#70BD91]">
         <BackgroundDecoration />
         {match(authPage)
           .with("login", () => <LoginForm />)
           .with("register", () => <RegisterForm />)
           .otherwise(() => null)}
-      </main>
+      </div>
     </>
   );
 };

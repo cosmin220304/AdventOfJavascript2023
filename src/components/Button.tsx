@@ -12,7 +12,7 @@ const Button = ({ children, className, ...props }: Props) => {
       {...props}
       className={twMerge(
         "btn-solid bg-[#FAC900] shadow-[0_6px_0_0_rgba(176,142,0,0.3)]",
-        "hover:brightness-95",
+        "hover:brightness-95 active:brightness-90",
         className,
       )}
     >

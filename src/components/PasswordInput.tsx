@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import Input, { type InputProps } from "./Input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 type PasswordInput = Omit<InputProps, "type" | "rightSide">;
 
-const PasswordInput = (props: PasswordInput) => {
+const PasswordInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const [show, setShow] = useState(false);
 
   return (
     <Input
       {...props}
+      ref={ref}
       type={show ? "text" : "password"}
       rightSide={
         <button onClick={() => setShow(!show)}>
@@ -22,6 +23,6 @@ const PasswordInput = (props: PasswordInput) => {
       }
     />
   );
-};
+});
 
 export default PasswordInput;

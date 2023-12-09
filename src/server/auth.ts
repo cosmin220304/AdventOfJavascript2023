@@ -1,16 +1,12 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
   type DefaultSession,
   type NextAuthOptions,
+  type User,
 } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
-import { compare, hash } from "bcrypt";
-import { add } from "date-fns";
-
-import { env } from "@/env";
+import CredentialProvider from "next-auth/providers/credentials";
+import { compare } from "bcrypt";
 import { db } from "@/server/db";
 
 /**
@@ -40,22 +36,8 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
-  },
-  adapter: PrismaAdapter(db),
   providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
-    Credentials({
+    CredentialProvider({
       id: "credentials",
       name: "Credentials",
       credentials: {
@@ -65,29 +47,30 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials) return null;
 
-        let user = await db.user.findFirst({
+        const user = await db.user.findFirst({
           where: { email: credentials.email },
         });
-
-        if (!user) {
-          user = await db.user.create({
-            data: {
-              email: credentials.email,
-              name: credentials.email.split("@")[0] ?? "unknown",
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-              password: (await hash(credentials.password, 10)) as string,
-            },
-          });
-        }
+        if (!user) return null;
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         const isValid = await compare(credentials.password, user.password);
-        if (!isValid) return null;
-
-        return user;
+        return isValid ? user : null;
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) token.user = user;
+      return token;
+    },
+    session: async ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: (token.user as User).id,
+      },
+    }),
+  },
 };
 
 /**

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 export type InputProps = {
@@ -12,16 +12,17 @@ export type InputProps = {
   HTMLInputElement
 >;
 
-const Input = ({
-  label,
-  value,
-  className,
-  labelClassName,
-  inputClassName,
-  errors,
-  rightSide,
-  ...props
-}: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const {
+    label,
+    value,
+    className,
+    labelClassName,
+    inputClassName,
+    errors,
+    rightSide,
+    ...rest
+  } = props;
   const [isFocused, setIsFocused] = useState(false);
   const shrinkLabel = isFocused || value;
 
@@ -38,6 +39,8 @@ const Input = ({
         {label}
       </label>
       <input
+        {...rest}
+        ref={ref}
         className={twMerge(
           "input-solid w-full bg-white px-2 pb-5 pt-6 text-2xl text-black ring-gray-50",
           errors && "border-2 border-[#C52425] bg-[#FD4801]",
@@ -46,13 +49,13 @@ const Input = ({
         value={value}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        {...props}
       />
       {rightSide && (
         <div className="absolute right-4 top-5 pt-1">{rightSide}</div>
       )}
+      {errors && <div className="text-xl text-[#C52425]">{errors}</div>}
     </div>
   );
-};
+});
 
 export default Input;

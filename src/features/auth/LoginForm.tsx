@@ -1,14 +1,49 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import PasswordInput from "@/components/PasswordInput";
-import { useState } from "react";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type LoginRequest, LoginRequestSchema } from "@/schemas/requests";
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { push } = useRouter();
+  const form = useForm<LoginRequest>({
+    defaultValues: { email: "", password: "" },
+    resolver: zodResolver(LoginRequestSchema),
+  });
+  const {
+    register,
+    watch,
+    setError,
+    formState: { errors },
+    handleSubmit,
+  } = form;
+
+  const login = async (LoginRequest: LoginRequest) => {
+    const data = await signIn("credentials", {
+      ...LoginRequest,
+      redirect: false,
+    });
+
+    console.log(data);
+
+    if (data?.status === 401) {
+      setError("email", { message: "Invalid credentials" });
+      setError("password", { message: "Invalid credentials" });
+      return;
+    }
+
+    push("/");
+  };
 
   return (
-    <div className="z-10 mt-16 flex w-[32rem] flex-col gap-4">
+    <form
+      className="z-10 mt-16 flex w-[32rem] flex-col gap-4"
+      onSubmit={handleSubmit(login)}
+    >
       <div className="h-72 bg-[url('/images/secret-santa.svg')] bg-cover p-10" />
 
       <h1 className="flex items-center justify-center gap-4 text-5xl tracking-wider text-white">
@@ -19,24 +54,26 @@ const LoginForm = () => {
 
       <Input
         label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={watch("email")}
+        {...register("email")}
         className="w-full"
+        errors={errors.email?.message}
       />
       <PasswordInput
         label="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={watch("password")}
+        {...register("password")}
         className="w-full"
+        errors={errors.password?.message}
       />
       <Button className="h-16 w-full rounded-full text-2xl font-bold">
         SUBMIT
       </Button>
 
-      <div className="w-full text-center text-xl underline">
+      <Link href="/register" className="w-full text-center text-xl underline">
         Need an Account?
-      </div>
-    </div>
+      </Link>
+    </form>
   );
 };
 

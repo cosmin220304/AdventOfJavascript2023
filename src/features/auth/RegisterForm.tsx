@@ -1,19 +1,22 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import PasswordInput from "@/components/PasswordInput";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type LoginRequest, LoginRequestSchema } from "@/schemas/requests";
+import {
+  type RegisterRequest,
+  RegisterRequestSchema,
+} from "@/schemas/requests";
+import { api } from "@/utils/api";
 import { AuthPageRoute } from "@/pages/auth";
 import { useRouter } from "next/router";
 
-const LoginForm = () => {
-  const { push } = useRouter();
-  const form = useForm<LoginRequest>({
-    defaultValues: { email: "", password: "" },
-    resolver: zodResolver(LoginRequestSchema),
+const RegisterForm = () => {
+  const { push, pathname } = useRouter();
+  const form = useForm<RegisterRequest>({
+    defaultValues: { name: "", email: "", password: "" },
+    resolver: zodResolver(RegisterRequestSchema),
   });
   const {
     register,
@@ -23,34 +26,41 @@ const LoginForm = () => {
     handleSubmit,
   } = form;
 
-  const handleLogin = async (LoginRequest: LoginRequest) => {
-    const data = await signIn("credentials", {
-      ...LoginRequest,
-      redirect: false,
-    });
+  const { mutateAsync: registerUser } = api.users.register.useMutation();
 
-    if (data?.status === 401) {
-      setError("email", { message: "Invalid credentials" });
-      setError("password", { message: "Invalid credentials" });
-      return;
+  const handleRegister = async (LoginRequest: RegisterRequest) => {
+    try {
+      await registerUser(LoginRequest);
+      push(AuthPageRoute.login, undefined, { shallow: true });
+    } catch (error) {
+      if (error instanceof Error) {
+        setError("email", { message: error.message });
+      } else {
+        setError("email", { message: "Something went wrong" });
+      }
     }
-
-    push("/", undefined, { shallow: true });
   };
 
   return (
     <form
       className="z-10 mt-16 flex w-[32rem] flex-col gap-4"
-      onSubmit={handleSubmit(handleLogin)}
+      onSubmit={handleSubmit(handleRegister)}
     >
       <div className="h-72 bg-[url('/images/secret-santa.svg')] bg-cover p-10" />
 
       <h1 className="flex items-center justify-center gap-4 text-5xl tracking-wider text-white">
         <Divider />
-        Login
+        Sign up
         <Divider />
       </h1>
 
+      <Input
+        label="Name"
+        value={watch("name")}
+        {...register("name")}
+        className="w-full"
+        errors={errors.name?.message}
+      />
       <Input
         label="Email"
         value={watch("email")}
@@ -70,10 +80,10 @@ const LoginForm = () => {
       </Button>
 
       <Link
-        href={AuthPageRoute.register}
+        href={AuthPageRoute.login}
         className="w-full text-center text-xl underline"
       >
-        Need an Account?
+        Ready to login?
       </Link>
     </form>
   );
@@ -83,4 +93,4 @@ const Divider = () => {
   return <div className="w-12 border-t-4 border-white" />;
 };
 
-export default LoginForm;
+export default RegisterForm;

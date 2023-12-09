@@ -6,7 +6,7 @@ export default function Home() {
   const session = useSession();
 
   if (session.status === "unauthenticated") {
-    return <Redirect href="/login" />;
+    return <Redirect href="/auth" />;
   }
 
   return (
@@ -17,7 +17,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="m-32 flex gap-2"></main>
+      <main className="m-32 flex gap-2">
+        <h1 className="text-5xl">Dashboard</h1>
+      </main>
     </>
   );
 }
